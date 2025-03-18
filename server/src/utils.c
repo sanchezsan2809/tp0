@@ -18,14 +18,14 @@ int iniciar_servidor(void)
 	int err = getaddrinfo(NULL, PUERTO, &hints, &servinfo);
 
 	// Creamos el socket de escucha del servidor
-	int fd_escucha = socket(servinfo->ai_family, 
+	socket_servidor = socket(servinfo->ai_family, 
 							servinfo->ai_socktype,
 							servinfo->ai_protocol);
-	err = setsockopt(fd_escucha, SOL_SOCKET, SO_REUSEADDR, &(int){1}, sizeof(int));
+	err = setsockopt(socket_servidor, SOL_SOCKET, SO_REUSEADDR, &(int){1}, sizeof(int));
 	// Asociamos el socket a un puerto
-	err = bind(fd_escucha, servinfo->ai_addr, servinfo->ai_addrlen);
+	err = bind(socket_servidor, servinfo->ai_addr, servinfo->ai_addrlen);
 	// Escuchamos las conexiones entrantes
-	err = listen(fd_escucha, SOMAXCONN);
+	err = listen(socket_servidor, SOMAXCONN);
 	freeaddrinfo(servinfo);
 	log_trace(logger, "Listo para escuchar a mi cliente");
 
